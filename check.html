@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فحص التثبيت</title>
+<style>
+  body{font-family:-apple-system,"Segoe UI",Tahoma,sans-serif;background:#ece5dd;color:#111b21;margin:0;padding:16px;line-height:1.7}
+  h1{font-size:19px;color:#075e54;margin:0 0 12px}
+  .r{background:#fff;border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:14px;word-break:break-word}
+  .ok{border-right:5px solid #25d366}
+  .bad{border-right:5px solid #d9534f}
+  .warn{border-right:5px solid #e0a800}
+  small{color:#667781;display:block;direction:ltr;text-align:left}
+</style>
+</head>
+<body>
+<h1>فحص تثبيت مصاريفي</h1>
+<div id="out"></div>
+<script>
+var out=document.getElementById('out');
+function add(kind,text,detail){
+  var d=document.createElement('div');d.className='r '+kind;
+  d.textContent=(kind==='ok'?'✅ ':kind==='bad'?'❌ ':'⚠️ ')+text;
+  if(detail){var s=document.createElement('small');s.textContent=detail;d.appendChild(s)}
+  out.appendChild(d);
+}
+async function get(url){
+  try{
+    var r=await fetch(url+'?_='+Date.now(),{cache:'no-store'});
+    return {ok:r.ok,status:r.status,type:r.headers.get('content-type')||'',res:r};
+  }catch(e){return {ok:false,status:0,type:'',err:String(e)}}
+}
+function imgSize(url){
+  return new Promise(function(res){
+    var i=new Image();
+    i.onload=function(){res(i.naturalWidth+'x'+i.naturalHeight)};
+    i.onerror=function(){res(null)};
+    i.src=url+'?_='+Date.now();
+  });
+}
+(async function(){
+  add('warn','العنوان اللي فاتح منه الصفحة دي',location.href);
+  if(location.protocol!=='https:'&&location.hostname!=='localhost')add('bad','الصفحة مش على https');
+
+  // manifest
+  var m=await get('/manifest.json');
+  var man=null;
+  if(!m.ok){add('bad','manifest.json مش موجود أو مش بيفتح (status '+m.status+')','ارفع الملف في الصفحة الرئيسية للريبو بنفس الاسم بالظبط')}
+  else{
+    try{
+      man=JSON.parse(await m.res.text());
+      add('ok','manifest.json موجود وسليم: '+(man.name||'?'),'start_url='+man.start_url+'  scope='+man.scope+'  display='+man.display);
+    }catch(e){add('bad','manifest.json موجود بس مش JSON سليم')}
+  }
+
+  // icons
+  var sizes=['192','512'];
+  for(var i=0;i<sizes.length;i++){
+    var u='/icon-'+sizes[i]+'.png';
+    var g=await get(u);
+    if(!g.ok){add('bad','الأيقونة icon-'+sizes[i]+'.png مش موجودة (status '+g.status+')','ارفعها في الصفحة الرئيسية للريبو');continue}
+    var sz=await imgSize(u);
+    if(!sz)add('bad','icon-'+sizes[i]+'.png بتنزل بس مش صورة سليمة');
+    else if(sz!==sizes[i]+'x'+sizes[i])add('bad','icon-'+sizes[i]+'.png مقاسها '+sz+' بدل '+sizes[i]+'x'+sizes[i]);
+    else add('ok','icon-'+sizes[i]+'.png تمام ('+sz+')');
+  }
+
+  // sw.js
+  var s=await get('/sw.js');
+  if(!s.ok)add('bad','sw.js مش موجود (status '+s.status+')','ارفعه في الصفحة الرئيسية للريبو');
+  else add('ok','sw.js موجود','content-type: '+s.type);
+
+  // index.html version
+  var ix=await get('/index.html');
+  if(!ix.ok)add('bad','index.html مش بيفتح (status '+ix.status+')');
+  else{
+    var t=await ix.res.text();
+    if(t.indexOf('rel="manifest"')===-1)add('bad','index.html اللي على الريبو هو النسخة القديمة (من غير ربط manifest)','ارفع النسخة الجديدة اللي بعتهالك بنفس الاسم index.html وبدّل القديمة');
+    else add('ok','index.html فيه ربط manifest');
+    if(t.indexOf('serviceWorker.register')===-1)add('bad','index.html مفيهوش تسجيل service worker');
+  }
+
+  // service worker registration state
+  if(!('serviceWorker' in navigator))add('bad','المتصفح مش بيدعم service worker');
+  else{
+    try{
+      var regs=await navigator.serviceWorker.getRegistrations();
+      if(!regs.length)add('warn','لسه مفيش service worker متسجل','افتح الصفحة الرئيسية https://gfdslo1542-web.github.io/ مرة واستنى ثواني وارجع هنا');
+      else regs.forEach(function(r){
+        var st=(r.active&&r.active.state)||(r.installing&&'installing')||(r.waiting&&'waiting')||'?';
+        add(st==='activated'?'ok':'warn','service worker متسجل ('+st+')',r.scope);
+      });
+    }catch(e){add('warn','مقدرتش أقرا حالة الـservice worker')}
+  }
+
+  if(man){
+    var okIcons=(man.icons||[]).filter(function(x){return /192|512/.test(x.sizes||'')}).length;
+    if(okIcons<2)add('bad','manifest مفيهوش أيقونتين 192 و512');
+  }
+
+  var fired=false;
+  window.addEventListener('beforeinstallprompt',function(e){
+    fired=true;add('ok','كروم قال إن التطبيق قابل للتثبيت ✔ (شوف قايمة ⋮ ثم Install app)');
+  });
+  setTimeout(function(){
+    if(!fired)add('warn','كروم لسه ماطلعش خيار التثبيت من الصفحة دي','ده طبيعي في صفحة الفحص نفسها. جرب الصفحة الرئيسية https://gfdslo1542-web.github.io/');
+  },2500);
+})();
+</script>
+</body>
+</html>
