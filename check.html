@@ -44,7 +44,7 @@ function imgSize(url){
   if(location.protocol!=='https:'&&location.hostname!=='localhost')add('bad','الصفحة مش على https');
 
   // manifest
-  var m=await get('/manifest.json');
+  var m=await get('manifest.json');
   var man=null;
   if(!m.ok){add('bad','manifest.json مش موجود أو مش بيفتح (status '+m.status+')','ارفع الملف في الصفحة الرئيسية للريبو بنفس الاسم بالظبط')}
   else{
@@ -57,7 +57,7 @@ function imgSize(url){
   // icons
   var sizes=['192','512'];
   for(var i=0;i<sizes.length;i++){
-    var u='/icon-'+sizes[i]+'.png';
+    var u='icon-'+sizes[i]+'.png';
     var g=await get(u);
     if(!g.ok){add('bad','الأيقونة icon-'+sizes[i]+'.png مش موجودة (status '+g.status+')','ارفعها في الصفحة الرئيسية للريبو');continue}
     var sz=await imgSize(u);
@@ -67,12 +67,12 @@ function imgSize(url){
   }
 
   // sw.js
-  var s=await get('/sw.js');
+  var s=await get('sw.js');
   if(!s.ok)add('bad','sw.js مش موجود (status '+s.status+')','ارفعه في الصفحة الرئيسية للريبو');
   else add('ok','sw.js موجود','content-type: '+s.type);
 
   // index.html version
-  var ix=await get('/index.html');
+  var ix=await get('index.html');
   if(!ix.ok)add('bad','index.html مش بيفتح (status '+ix.status+')');
   else{
     var t=await ix.res.text();
@@ -86,7 +86,7 @@ function imgSize(url){
   else{
     try{
       var regs=await navigator.serviceWorker.getRegistrations();
-      if(!regs.length)add('warn','لسه مفيش service worker متسجل','افتح الصفحة الرئيسية https://gfdslo1542-web.github.io/ مرة واستنى ثواني وارجع هنا');
+      if(!regs.length)add('warn','لسه مفيش service worker متسجل','افتح الصفحة الرئيسية الصفحة الرئيسية للتطبيق مرة واستنى ثواني وارجع هنا');
       else regs.forEach(function(r){
         var st=(r.active&&r.active.state)||(r.installing&&'installing')||(r.waiting&&'waiting')||'?';
         add(st==='activated'?'ok':'warn','service worker متسجل ('+st+')',r.scope);
@@ -104,7 +104,7 @@ function imgSize(url){
     fired=true;add('ok','كروم قال إن التطبيق قابل للتثبيت ✔ (شوف قايمة ⋮ ثم Install app)');
   });
   setTimeout(function(){
-    if(!fired)add('warn','كروم لسه ماطلعش خيار التثبيت من الصفحة دي','ده طبيعي في صفحة الفحص نفسها. جرب الصفحة الرئيسية https://gfdslo1542-web.github.io/');
+    if(!fired)add('warn','كروم لسه ماطلعش خيار التثبيت من الصفحة دي','ده طبيعي في صفحة الفحص نفسها. جرب الصفحة الرئيسية للتطبيق');
   },2500);
 })();
 </script>

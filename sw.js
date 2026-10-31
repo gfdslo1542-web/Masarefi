@@ -1,7 +1,7 @@
 // Service worker لمصاريفي: بيخلي التطبيق يشتغل من غير نت.
 // لو عدّلت أي ملف بعد كده غيّر رقم النسخة تحت (v1 -> v2).
-const CACHE = 'masarefy-v1';
-const FILES = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
+const CACHE = 'masarefy-v2';
+const FILES = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
@@ -28,6 +28,6 @@ self.addEventListener('fetch', (e) => {
         }
         return res;
       })
-      .catch(() => caches.match(req).then((m) => m || caches.match('/index.html')))
+      .catch(() => caches.match(req).then((m) => m || caches.match('./index.html')))
   );
 });
