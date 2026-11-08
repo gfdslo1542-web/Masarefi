@@ -130,7 +130,7 @@ var DEBT_CAT='سداد ديون',COLLECT_CAT='تحصيل ديون';
 var storageOK=true;
 var LK='masarefy_lang',lang='ar',MISS=[];
 try{lang=localStorage.getItem(LK)==='en'?'en':'ar'}catch(e){}
-var EN={
+var EN={'✎ الاسم والترجمة':'✎ Name & translation','الاسم والترجمة':'Name & translation','الاسم بالعربي':'Arabic name','الاسم بالإنجليزي':'English name','رجّع الافتراضي':'Reset to default','أو اكتب / الصق أي إيموجي':'Or type / paste any emoji','استخدم':'Use','⚙️ إدارة التصنيفات (حذف / تعديل / أيقونة)':'⚙️ Manage categories (delete / edit / icon)','اختار أيقونة':'Choose an icon',
 ' (الحالي)':' (current)',
 ' (الصرف ':' (spent ',
 ' (النهاردة)':' (today)',
@@ -437,9 +437,13 @@ var EN={
 'الميزانية اللي كنت محددها لشهر ':'The budget you had set for ','هتتحسب كإضافة يدوية فوق (الدخل + المدّخر من الشهر اللي فات). تعتبرها كده، ولا تصفّرها وتبدأ من الدخل والمدّخر بس؟':'It will now count as a manual addition on top of (income + savings from last month). Keep it like that, or reset it and start from income and savings only?','خليها إضافة يدوية':'Keep as manual addition','صفّرها':'Reset it',
 '🔍 ابحث (مثال: بنزين)':'🔍 Search (e.g. fuel)'
 };
-var CN_EN={'أكل وشرب':'Food & drinks','أكل':'Food','مواصلات':'Transport','مشتريات':'Shopping','منزل':'Home','صحة':'Health','اتصالات':'Telecom','ترفيه':'Entertainment','تعليم':'Education','أخرى':'Other','سداد ديون':'Debt payments','تحصيل ديون':'Debt collections','فطار':'Breakfast','غداء':'Lunch','عشاء':'Dinner','مطاعم':'Restaurants','قهوة':'Coffee','سوبرماركت':'Groceries','بنزين':'Fuel','مترو':'Metro','أوبر':'Uber','ميكروباص':'Microbus','ملابس':'Clothes','أدوات':'Supplies','إلكترونيات':'Electronics','إيجار':'Rent','كهرباء':'Electricity','مياه':'Water','غاز':'Gas','إنترنت':'Internet','دواء':'Medicine','كشف':'Doctor visit','تحاليل':'Lab tests','رصيد':'Phone credit','باقة إنترنت':'Data plan','سينما':'Cinema','خروجة':'Outing','اشتراكات':'Subscriptions','ألعاب':'Games','كتب':'Books','كورسات':'Courses','مصاريف دراسة':'Tuition','مرتب':'Salary','عمل حر':'Freelance','مكافأة':'Bonus','هدية':'Gift'};
+var CN_EN={'أكل وشرب':'Food & drinks','أكل':'Food','مواصلات':'Transport','مشتريات':'Shopping','منزل':'Home','صحة':'Health','اتصالات':'Telecom','ترفيه':'Entertainment','تعليم':'Education','أخرى':'Other','سداد ديون':'Debt payments','تحصيل ديون':'Debt collections','فطار':'Breakfast','غداء':'Lunch','عشاء':'Dinner','مطاعم':'Restaurants','قهوة':'Coffee','سوبرماركت':'Groceries','بنزين':'Fuel','مترو':'Metro','أوبر':'Uber','ميكروباص':'Microbus','ملابس':'Clothes','أدوات':'Supplies','إلكترونيات':'Electronics','إيجار':'Rent','كهرباء':'Electricity','مياه':'Water','غاز':'Gas','إنترنت':'Internet','دواء':'Medicine','كشف':'Doctor visit','تحاليل':'Lab tests','رصيد':'Phone credit','باقة إنترنت':'Data plan','سينما':'Cinema','خروجة':'Outing','اشتراكات':'Subscriptions','ألعاب':'Games','كتب':'Books','كورسات':'Courses','مصاريف دراسة':'Tuition','مرتب':'Salary','عمل حر':'Freelance','مكافأة':'Bonus','هدية':'Gift','شحن رصيد':'Phone top-up','بلايستيشن':'PlayStation','حجز':'Bookings & reservations','عناية شخصية':'Personal care','سلف':'Loans & advances','حلاوة القبض':'Payday treat','علاج أمي':'Mother\'s healthcare','زيارة':'Family visits','فواتير':'Bills & utilities','اشتراك':'Subscription','هدايا':'Gifts','تبرعات':'Donations','صدقة':'Charity','سيارة':'Vehicle','صيانة':'Maintenance','صيانة سيارة':'Vehicle maintenance','مطعم':'Dining out','بقالة':'Groceries','خضار وفاكهة':'Fresh produce','لحوم':'Meat & poultry','حلويات':'Sweets & desserts','كافيه':'Cafés','جيم':'Gym membership','رياضة':'Sports & fitness','سفر':'Travel','رحلة':'Trips','فندق':'Accommodation','طيران':'Flights','تأمين':'Insurance','ضرائب':'Taxes','أطفال':'Children','مدرسة':'School fees','دروس خصوصية':'Private tutoring','حيوانات أليفة':'Pet care','حلاقة':'Haircuts','كوافير':'Hair salon','تجميل':'Beauty & cosmetics','أجهزة':'Appliances','أثاث':'Furniture','تشطيب':'Home renovation','إصلاحات':'Repairs','عمل':'Work expenses','أدوية':'Medications','علاج':'Healthcare','عيادة':'Clinic visits','أسنان':'Dental care','نظارة':'Eyewear','مواصلات عامة':'Public transport','تاكسي':'Taxi','موقف':'Parking','مخالفات':'Fines & penalties','قسط':'Installments','قرض':'Loan','سداد قرض':'Loan repayment','ادخار':'Savings','استثمار':'Investments','زكاة':'Zakat','عيدية':'Eid gifts','هاتف':'Mobile phone','موبايل':'Mobile phone','خدمات':'Services','تسوق':'Shopping','أونلاين':'Online purchases','نت':'Internet','ملابس':'Clothing','راتب':'Salary','عمولة':'Commission','بيع':'Sales','استرداد':'Refund','طعام':'Food','مشروبات':'Beverages','وجبات سريعة':'Fast food','توصيل':'Delivery','دراسة':'Education','دورات':'Courses','ترفيه وخروجات':'Entertainment & outings','حفلات':'Events','مناسبات':'Social occasions','أفراح':'Weddings','عزاء':'Condolences','زيارات':'Family visits','سلف وديون':'Loans & debts','ديون':'Debts'};
+var LEX_EN=CN_EN,LEX_AR={};Object.keys(LEX_EN).forEach(function(k){if(!LEX_AR[LEX_EN[k]])LEX_AR[LEX_EN[k]]=k});
+
 function T(s){if(lang!=='en')return s;var r=EN[s];if(r===undefined){if(MISS.indexOf(s)===-1)MISS.push(s);return s}return r}
-function cn(n){return lang==='en'&&CN_EN[n]?CN_EN[n]:n}
+function cn(n){var t=D&&D.tr&&D.tr[n];if(lang==='en')return (t&&t.en)||LEX_EN[n]||n;return (t&&t.ar)||LEX_AR[n]||n}
+function isAr(n){return /[\u0600-\u06FF]/.test(n)}
+function hasLang(n,l){var t=D.tr[n]||{};if(l==='en')return !!(t.en||LEX_EN[n]||!isAr(n));return !!(t.ar||LEX_AR[n]||isAr(n))}
 var MONTHS_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var DAYS_EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
@@ -487,12 +491,14 @@ var DEFAULT_CATS=[
 var ALIAS={'أكل وشرب':['أكل']};
 var ICONS=['🍽️','🚌','🛍️','🏠','💊','📱','🎬','📚','📦','☕','⛽','🎁','💳','🧾','🐾','✈️','👶','💇','🏋️','🔧','💡','🎮','🏷️','💼'];
 function iconFor(n){var m={'أكل':'🍽️','مواصلات':'🚌','سداد ديون':'💳','تحصيل ديون':'🤝'};return m[n]||'🏷️'}
-function blank(){return{schema:2,expenses:[],income:[],budgets:{},budgetFixed:{},catBudgets:{},cats:[],incomeSources:['مرتب','عمل حر','مكافأة','هدية','أخرى'],debts:[],recurring:[],
+function blank(){return{schema:2,expenses:[],income:[],budgets:{},budgetFixed:{},catBudgets:{},cats:[],tr:{},deletedCats:[],incomeSources:['مرتب','عمل حر','مكافأة','هدية','أخرى'],debts:[],recurring:[],
  settings:{theme:'auto',a75:true,a90:true,a100:true,budgetV3:false,budgetAsked:false,notif:false,lastCat:'',lastSub:'',lastBackup:0,lastReminder:''},alertsShown:{}}}
 function ensureDefaultCats(D){
-  D.expenses.forEach(function(e){if(!D.cats.some(function(c){return c.name===e.cat}))D.cats.push({name:e.cat,icon:iconFor(e.cat),subs:[]})});
+  var del=D.deletedCats||[];
+  D.expenses.forEach(function(e){if(del.indexOf(e.cat)===-1&&!D.cats.some(function(c){return c.name===e.cat}))D.cats.push({name:e.cat,icon:iconFor(e.cat),subs:[]})});
   DEFAULT_CATS.forEach(function(c){
     var names=[c[0]].concat(ALIAS[c[0]]||[]);
+    if(names.some(function(n){return del.indexOf(n)!==-1}))return;
     if(!D.cats.some(function(x){return names.indexOf(x.name)!==-1}))D.cats.push({name:c[0],icon:c[1],subs:c[2].slice()});
   });
   D.expenses.forEach(function(e){if(e.sub){var c=D.cats.filter(function(x){return x.name===e.cat})[0];if(c&&c.subs.indexOf(e.sub)===-1)c.subs.push(e.sub)}});
@@ -511,7 +517,7 @@ function cleanRec(x){if(!x||typeof x!=='object')return null;var a=amt(x.amount),
   return{id:str(x.id,60)||uid(),title:t,amount:a,cat:c,sub:str(x.sub,40),freq:x.freq==='weekly'?'weekly':'monthly',start:x.start,end:validDate(x.end)?x.end:'',last:validDate(x.last)?x.last:''}}
 function cleanCats(a){var seen={},o=[];(Array.isArray(a)?a:[]).forEach(function(c){if(!c||typeof c!=='object')return;var n=str(c.name,40);if(!n||seen[n])return;seen[n]=1;
   var subs=[],ss={};(Array.isArray(c.subs)?c.subs:[]).forEach(function(s){s=str(s,40);if(s&&!ss[s]){ss[s]=1;subs.push(s)}});
-  o.push({name:n,icon:str(c.icon,8)||iconFor(n),subs:subs})});return o}
+  o.push({name:n,icon:str(c.icon,16)||iconFor(n),subs:subs})});return o}
 function cleanMap(m,monthKeys){var o={};if(m&&typeof m==='object')Object.keys(m).forEach(function(k){if(monthKeys&&!/^\d{4}-\d{2}$/.test(k))return;var v=amt(m[k]);if(v)o[k]=v});return o}
 function cleanSettings(s,base){var o=Object.assign({},base);if(s&&typeof s==='object'){
   if(['auto','light','dark'].indexOf(s.theme)!==-1)o.theme=s.theme;['a75','a90','a100','notif','budgetV3','budgetAsked'].forEach(function(k){if(typeof s[k]==='boolean')o[k]=s[k]});
@@ -526,6 +532,8 @@ function cleanData(raw){
   D.budgetFixed=cleanMap(raw.budgetFixed,true);
   D.catBudgets=cleanMap(raw.catBudgets,false);
   D.cats=cleanCats(raw.cats);
+  (Array.isArray(raw.deletedCats)?raw.deletedCats:[]).forEach(function(n){n=str(n,40);if(n&&D.deletedCats.indexOf(n)===-1&&D.deletedCats.length<300)D.deletedCats.push(n)});
+  if(raw.tr&&typeof raw.tr==='object'){var tk=Object.keys(raw.tr).slice(0,600);tk.forEach(function(k){var v=raw.tr[k],kk=str(k,40);if(!kk||!v||typeof v!=='object')return;var o={},a=str(v.ar,40),e=str(v.en,40);if(a)o.ar=a;if(e)o.en=e;if(o.ar||o.en)D.tr[kk]=o})}
   var src=[];(Array.isArray(raw.incomeSources)?raw.incomeSources:[]).forEach(function(s){s=str(s,40);if(s&&src.indexOf(s)===-1)src.push(s)});
   if(src.length)D.incomeSources=src;
   D.settings=cleanSettings(raw.settings,D.settings);
@@ -653,6 +661,33 @@ function askText(title,label,value,ok){
     ov.appendChild(box);document.body.appendChild(ov);inp.focus();try{inp.select()}catch(e){}
   });
 }
+var EMOJIS='🍽️ 🍔 🍕 🥗 ☕ 🧃 🛒 🥦 🍖 🍰 🚌 🚕 🚗 ⛽ 🅿️ 🚆 ✈️ 🏠 💡 🔌 💧 📶 📱 💻 🎮 🎬 🎧 📚 🎓 ✏️ 💊 🏥 🦷 👓 💇 💅 🧴 🧼 👕 👟 👜 🎁 💐 💍 🎉 🕌 🤲 ❤️ 👶 🧸 🐾 🐱 🔧 🛠️ 🧰 🪑 🛋️ 🧹 💳 🧾 💰 💵 🏦 📈 🏷️ 🛍️ 📦 💼 🧳 🏖️ ⚽ 🏋️ 🎯 🎵 📷 🔑 🚿 🌐 📞 ✉️ 🎟️ 🍫 🍬 👨‍👩‍👧 🤝 🙏 ⭐ 🔥 💡 🧾'.split(' ');
+function firstGlyph(t){t=(t||'').trim();if(!t)return '';try{if(window.Intl&&Intl.Segmenter){var it=new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(t)[Symbol.iterator]().next();return it.done?'':it.value.segment}}catch(e){}return Array.from(t).slice(0,2).join('')}
+function pickIcon(cur,cb){
+  var ov=h('div',{class:'ov mid',role:'dialog','aria-modal':'true','aria-label':T('اختار أيقونة')}),bx=h('div',{class:'sheet'},h('div',{class:'hd'},h('b',{text:T('اختار أيقونة')})));
+  var inp=h('input',{type:'text',maxlength:'16',placeholder:T('أو اكتب / الصق أي إيموجي'),'aria-label':T('أو اكتب / الصق أي إيموجي'),value:'',style:'text-align:center;font-size:22px'});
+  var use=function(g){g=firstGlyph(g);if(!g)return;ov.remove();cb(g)};
+  bx.appendChild(h('div',{class:'row2'},inp,h('button',{type:'button',class:'btn p',text:T('استخدم'),onclick:function(){use(inp.value)}})));
+  var g=h('div',{class:'catgrid',style:'grid-template-columns:repeat(5,1fr);margin-top:8px;max-height:46vh;overflow:auto'}),seen={};
+  EMOJIS.forEach(function(i){if(seen[i])return;seen[i]=1;g.appendChild(h('button',{type:'button',class:'cat','aria-label':i,text:i,onclick:function(){use(i)}}))});
+  bx.appendChild(g);bx.appendChild(h('button',{type:'button',class:'btn',style:'margin-top:8px',text:T('إلغاء'),onclick:function(){ov.remove()}}));
+  ov.appendChild(bx);document.body.appendChild(ov);
+}
+function openNameEditor(key,done){
+  var t=D.tr[key]||{},defAr=LEX_AR[key]||(isAr(key)?key:''),defEn=LEX_EN[key]||(isAr(key)?'':key);
+  var ov=h('div',{class:'ov mid',role:'dialog','aria-modal':'true','aria-label':T('الاسم والترجمة')}),bx=h('div',{class:'sheet'},h('div',{class:'hd'},h('b',{text:T('الاسم والترجمة')})));
+  var a=h('input',{type:'text',id:'ne1',maxlength:'40',value:t.ar||defAr}),e=h('input',{type:'text',id:'ne2',maxlength:'40',value:t.en||defEn,style:'direction:ltr;text-align:left'});
+  bx.appendChild(h('label',{class:'fl',for:'ne1',text:T('الاسم بالعربي')}));bx.appendChild(a);
+  bx.appendChild(h('label',{class:'fl',for:'ne2',text:T('الاسم بالإنجليزي')}));bx.appendChild(e);
+  bx.appendChild(h('div',{class:'row2',style:'margin-top:10px'},h('button',{type:'button',class:'btn p',text:T('حفظ'),onclick:function(){
+    var av=str(a.value,40),ev=str(e.value,40),o={};
+    if(av&&av!==defAr)o.ar=av;if(ev&&ev!==defEn)o.en=ev;
+    if(o.ar||o.en)D.tr[key]=o;else delete D.tr[key];save();ov.remove();done&&done()}}),
+    h('button',{type:'button',class:'btn',text:T('إلغاء'),onclick:function(){ov.remove()}})));
+  bx.appendChild(h('button',{type:'button',class:'btn',style:'margin-top:8px',text:T('رجّع الافتراضي'),onclick:function(){delete D.tr[key];save();ov.remove();done&&done()}}));
+  ov.appendChild(bx);document.body.appendChild(ov);a.focus();
+}
+function addCatObj(name,icon){D.deletedCats=D.deletedCats.filter(function(n){return n!==name});var o={name:name,icon:icon||iconFor(name),subs:[]};D.cats.push(o);return o}
 var sheets=[];
 function openSheet(title,build){
   var ov=h('div',{class:'ov'}),box=h('div',{class:'sheet',role:'dialog','aria-modal':'true','aria-label':title});
@@ -665,7 +700,7 @@ function openSheet(title,build){
   build(body,close,box);
   return ov;
 }
-function popSheet(){var o=sheets.pop();if(o&&o.parentNode)o.parentNode.removeChild(o);render()}
+function popSheet(){var o=sheets.pop();if(o&&o.parentNode)o.parentNode.removeChild(o);var top=sheets[sheets.length-1];if(top&&top._resume)top._resume();render()}
 window.addEventListener('popstate',function(){if(sheets.length)popSheet()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sheets.length&&!document.querySelector('.ov.mid'))try{history.back()}catch(x){}});
 
@@ -724,8 +759,9 @@ function progress(pct,lvl,label){
 /* ---------- إضافة / تعديل عملية ---------- */
 function openEntry(opts){
   var edit=opts.edit||null,kind=edit?edit.k:(opts.kind==='inc'?'inc':'exp'),locked=false;
-  var st={cat:edit&&edit.k==='exp'?edit.cat:'',sub:edit&&edit.k==='exp'?edit.sub:'',src:edit&&edit.k==='inc'?edit.cat:'',newCat:'',newSub:'',newSrc:'',addingCat:false,addingSub:false,addingSrc:false};
-  openSheet(edit?T('تعديل العملية'):T('عملية جديدة'),function(body,close,box){
+  var resumeFn=function(){};
+  var st={cat:edit&&edit.k==='exp'?edit.cat:'',sub:edit&&edit.k==='exp'?edit.sub:'',src:edit&&edit.k==='inc'?edit.cat:'',newCat:'',newIcon:'',newSub:'',newSrc:'',addingCat:false,addingSub:false,addingSrc:false};
+  var addOv=openSheet(edit?T('تعديل العملية'):T('عملية جديدة'),function(body,close,box){
     var amountEl=h('input',{type:'text',inputmode:'decimal',id:'f-amount',autocomplete:'off',placeholder:'0.00',value:edit?String(edit.amount):'',style:'font-size:26px;font-weight:800;text-align:center;min-height:58px'});
     var noteEl=h('input',{type:'text',id:'f-note',maxlength:'120',value:edit?edit.note:'',placeholder:T('مثال: غداء، بنزين، أدوات')});
     var dateEl=h('input',{type:'date',id:'f-date',value:edit?edit.date:(opts.date||todayKey())});
@@ -746,7 +782,10 @@ function openEntry(opts){
           h('span',{class:'ci','aria-hidden':'true',text:c.icon}),h('span',{text:cn(c.name)}),c.name===last&&!edit?h('span',{class:'tg',text:T('آخر استخدام')}):null);grid.appendChild(b)});
         grid.appendChild(h('button',{type:'button',class:'cat','aria-pressed':st.addingCat?'true':'false',onclick:function(){st.addingCat=true;st.cat='';st.sub='';drawDyn()}},h('span',{class:'ci','aria-hidden':'true',text:'＋'}),h('span',{text:T('تصنيف جديد')})));
         dyn.appendChild(grid);
-        if(st.addingCat){var ni=h('input',{type:'text',maxlength:'40',placeholder:T('اسم التصنيف الجديد'),'aria-label':T('اسم التصنيف الجديد'),value:st.newCat,style:'margin-top:8px',oninput:function(){st.newCat=ni.value}});dyn.appendChild(ni)}
+        if(st.addingCat){var ni=h('input',{type:'text',maxlength:'40',placeholder:T('اسم التصنيف الجديد'),'aria-label':T('اسم التصنيف الجديد'),value:st.newCat,oninput:function(){st.newCat=ni.value}});
+          var ib=h('button',{type:'button',class:'btn',style:'width:56px;min-width:56px;font-size:22px','aria-label':T('اختار أيقونة'),text:st.newIcon||iconFor(st.newCat),onclick:function(){pickIcon(st.newIcon,function(g){st.newIcon=g;drawDyn()})}});
+          dyn.appendChild(h('div',{style:'display:flex;gap:8px;margin-top:8px'},ib,ni))}
+        dyn.appendChild(h('button',{type:'button',class:'chip',style:'margin-top:10px',text:T('⚙️ إدارة التصنيفات (حذف / تعديل / أيقونة)'),onclick:function(){openCatManager()}}));
         var c0=catObj(st.cat);
         if(st.addingCat||c0){
           dyn.appendChild(h('label',{class:'fl',text:T('التصنيف الفرعي (اختياري)')}));
@@ -781,7 +820,7 @@ function openEntry(opts){
         var cat=st.addingCat?str(st.newCat,40):st.cat,sub=st.addingSub?str(st.newSub,40):st.sub;
         if(!cat){err.textContent=T('اختار التصنيف الأول');return}
         locked=true;
-        var co=catObj(cat);if(!co){co={name:cat,icon:iconFor(cat),subs:[]};D.cats.push(co)}
+        var co=catObj(cat);if(!co)co=addCatObj(cat,st.addingCat?st.newIcon:'')
         if(sub&&co.subs.indexOf(sub)===-1)co.subs.push(sub);
         if(edit){var t=D.expenses.filter(function(x){return x.id===edit.id})[0];if(t){t.amount=a;t.cat=cat;t.sub=sub;t.note=note;t.date=date}}
         else{D.expenses.push({id:uid(),amount:a,cat:cat,sub:sub,note:note,date:date,ts:Date.now()});D.settings.lastCat=cat;D.settings.lastSub=sub}
@@ -817,7 +856,9 @@ function openEntry(opts){
     amountEl.addEventListener('keydown',function(e){if(e.key==='Enter')submit(false)});
     drawDyn();
     setTimeout(function(){amountEl.focus()},50);
+    resumeFn=function(){if(!edit&&st.cat&&!catObj(st.cat)){st.cat='';st.sub=''}drawDyn()};
   });
+  addOv._resume=function(){resumeFn()};
 }
 
 /* ---------- الشاشات ---------- */
@@ -1228,34 +1269,31 @@ function renderSettings(main){
     h('div',{class:'muted small',text:T('البيانات محفوظة على الجهاز ده بس (مش مشفرة ومش بتتزامن بين الأجهزة). مسح بيانات الموقع أو التخزين المحلي من المتصفح هيمسحها لو مفيش نسخة احتياطية — فاعمل نسخة بانتظام ولما تغيّر الفون استوردها.')})));
 }
 function openCatManager(){
-  openSheet(T('إدارة التصنيفات'),function(body){
+  return openSheet(T('إدارة التصنيفات'),function(body){
     var box=h('div');body.appendChild(box);
     function renameEverywhere(o,n){D.expenses.forEach(function(e){if(e.cat===o)e.cat=n});D.recurring.forEach(function(r){if(r.cat===o)r.cat=n});if(D.catBudgets[o]!==undefined){D.catBudgets[n]=D.catBudgets[o];delete D.catBudgets[o]}if(D.settings.lastCat===o)D.settings.lastCat=n}
     function draw(){
       box.textContent='';
       D.cats.forEach(function(c,idx){
         var card=h('div',{class:'card',style:'padding:10px'});
-        card.appendChild(h('div',{class:'trow'},h('b',{text:c.icon+' '+cn(c.name)}),h('span',{class:'small muted',text:D.catBudgets[c.name]?T('ميزانية: ')+money(D.catBudgets[c.name]):T('بدون ميزانية')})));
+        card.appendChild(h('div',{class:'trow'},h('b',{text:c.icon+' '+cn(c.name)+(hasLang(c.name,lang==='en'?'en':'ar')?'':' ⚠️')}),h('span',{class:'small muted',text:D.catBudgets[c.name]?T('ميزانية: ')+money(D.catBudgets[c.name]):T('بدون ميزانية')})));
         var r=h('div',{class:'chips',style:'margin-top:6px'});
         function b(t,l,fn,d){r.appendChild(h('button',{type:'button',class:'chip'+(d?' neg':''),text:t,'aria-label':l+' '+cn(c.name),onclick:fn}))}
         b('▲',T('رفع'),function(){if(idx>0){var t=D.cats[idx-1];D.cats[idx-1]=c;D.cats[idx]=t;save();draw()}});
         b('▼',T('خفض'),function(){if(idx<D.cats.length-1){var t=D.cats[idx+1];D.cats[idx+1]=c;D.cats[idx]=t;save();draw()}});
-        b(T('✎ اسم'),T('تعديل اسم'),function(){askText(T('اسم التصنيف'),T('الاسم الجديد'),c.name).then(function(n){if(!n||n===c.name)return;
-          var ex=catObj(n);if(ex){ex.subs=ex.subs.concat(c.subs.filter(function(s){return ex.subs.indexOf(s)===-1}));D.cats.splice(D.cats.indexOf(c),1);if(D.catBudgets[c.name]&&!D.catBudgets[n])D.catBudgets[n]=D.catBudgets[c.name];delete D.catBudgets[c.name];D.expenses.forEach(function(e){if(e.cat===c.name)e.cat=n});D.recurring.forEach(function(x){if(x.cat===c.name)x.cat=n})}
-          else{renameEverywhere(c.name,n);c.name=n}save();draw()})});
-        b(T('🎨 أيقونة'),T('تغيير أيقونة'),function(){var ov=h('div',{class:'ov mid'}),bx=h('div',{class:'sheet'},h('div',{class:'hd'},h('b',{text:T('اختار أيقونة')})));var g=h('div',{class:'catgrid',style:'grid-template-columns:repeat(4,1fr)'});
-          ICONS.forEach(function(i){g.appendChild(h('button',{type:'button',class:'cat',text:i,'aria-label':i,onclick:function(){c.icon=i;save();ov.remove();draw()}}))});bx.appendChild(g);bx.appendChild(h('button',{type:'button',class:'btn',style:'margin-top:8px',text:T('إلغاء'),onclick:function(){ov.remove()}}));ov.appendChild(bx);document.body.appendChild(ov)});
+        b(T('✎ الاسم والترجمة'),T('الاسم والترجمة'),function(){openNameEditor(c.name,draw)});
+        b(T('🎨 أيقونة'),T('تغيير أيقونة'),function(){pickIcon(c.icon,function(g){c.icon=g;save();draw()})});
         b(T('💰 ميزانية'),T('ميزانية'),function(){askText(T('ميزانية ')+c.name,T('المبلغ الشهري (اتركه فاضي لإلغائها)'),D.catBudgets[c.name]||'').then(function(v){
           if(v===null){if(D.catBudgets[c.name]){delete D.catBudgets[c.name];save();draw()}return}var a=parseAmount(v);if(!(a>0)){toast(T('مبلغ غير صحيح'));return}D.catBudgets[c.name]=round2(a);save();draw()})});
         b(T('＋ فرعي'),T('إضافة تصنيف فرعي لـ'),function(){askText(T('تصنيف فرعي جديد'),T('الاسم')).then(function(n){if(n&&c.subs.indexOf(n)===-1){c.subs.push(n);save();draw()}})});
-        b('🗑',T('حذف'),function(){modal(T('تحذف "')+c.name+T('"؟ المصروفات القديمة هتفضل زي ما هي.'),[{label:T('احذف'),v:1,d:true},{label:T('لا'),v:0}]).then(function(ok){if(!ok)return;D.cats.splice(D.cats.indexOf(c),1);delete D.catBudgets[c.name];save();draw()})},1);
+        b('🗑',T('حذف'),function(){modal(T('تحذف "')+cn(c.name)+T('"؟ المصروفات القديمة هتفضل زي ما هي.'),[{label:T('احذف'),v:1,d:true},{label:T('لا'),v:0}]).then(function(ok){if(!ok)return;D.cats.splice(D.cats.indexOf(c),1);delete D.catBudgets[c.name];if(D.deletedCats.indexOf(c.name)===-1)D.deletedCats.push(c.name);save();draw()})},1);
         card.appendChild(r);
         if(c.subs.length){var sr=h('div',{class:'chips',style:'margin-top:8px'});c.subs.forEach(function(s){sr.appendChild(h('span',{class:'chip',style:'min-height:36px;padding-block:2px;padding-inline:10px 4px'},h('span',{text:cn(s)}),
-          h('button',{type:'button',text:'✎','aria-label':T('تعديل ')+cn(s),style:'width:32px;height:32px',onclick:function(){askText(T('تعديل التصنيف الفرعي'),T('الاسم الجديد'),s).then(function(n){if(!n||n===s)return;var i=c.subs.indexOf(s);if(c.subs.indexOf(n)===-1)c.subs[i]=n;else c.subs.splice(i,1);D.expenses.forEach(function(e){if(e.cat===c.name&&e.sub===s)e.sub=n});D.recurring.forEach(function(x){if(x.cat===c.name&&x.sub===s)x.sub=n});save();draw()})}}),
+          h('button',{type:'button',text:'✎','aria-label':T('تعديل ')+cn(s),style:'width:32px;height:32px',onclick:function(){openNameEditor(s,draw)}}),
           h('button',{type:'button',text:'✕','aria-label':T('حذف ')+cn(s),style:'width:32px;height:32px;color:var(--danger)',onclick:function(){c.subs.splice(c.subs.indexOf(s),1);save();draw()}})))});card.appendChild(sr)}
         box.appendChild(card);
       });
-      box.appendChild(h('button',{type:'button',class:'btn p',text:T('+ تصنيف جديد'),onclick:function(){askText(T('تصنيف جديد'),T('الاسم')).then(function(n){if(!n)return;if(catObj(n)){toast(T('التصنيف موجود'));return}D.cats.push({name:n,icon:iconFor(n),subs:[]});save();draw()})}}));
+      box.appendChild(h('button',{type:'button',class:'btn p',text:T('+ تصنيف جديد'),onclick:function(){askText(T('تصنيف جديد'),T('الاسم')).then(function(n){if(!n)return;if(catObj(n)){toast(T('التصنيف موجود'));return}pickIcon('',function(g){addCatObj(n,g);save();draw()})})}}));
     }
     draw();
   });
@@ -1281,7 +1319,7 @@ function openRecurring(r){
 }
 
 /* ---------- النسخ الاحتياطي ---------- */
-function exportObj(){return{app:'masarefy',schema:2,exportedAt:Date.now(),data:{expenses:D.expenses,income:D.income,debts:D.debts,budgets:D.budgets,budgetFixed:D.budgetFixed,catBudgets:D.catBudgets,cats:D.cats,incomeSources:D.incomeSources,recurring:D.recurring,settings:D.settings}}}
+function exportObj(){return{app:'masarefy',schema:2,exportedAt:Date.now(),data:{expenses:D.expenses,income:D.income,debts:D.debts,budgets:D.budgets,budgetFixed:D.budgetFixed,catBudgets:D.catBudgets,cats:D.cats,tr:D.tr,deletedCats:D.deletedCats,incomeSources:D.incomeSources,recurring:D.recurring,settings:D.settings}}}
 function exportBackup(){download(JSON.stringify(exportObj(),null,1),'masarefy-backup-'+todayKey()+'.json','application/json');D.settings.lastBackup=Date.now();save();toast(T('✅ اتجهزت النسخة الاحتياطية'));render()}
 function parseBackup(text){
   var j;try{j=JSON.parse(text)}catch(e){return{err:T('الملف مش بصيغة JSON سليمة')}}
@@ -1303,7 +1341,8 @@ function mergeData(inc){
   var rm=ids(D.recurring);inc.recurring.forEach(function(x){if(!rm[x.id]){D.recurring.push(x);res.r++}});
   Object.keys(inc.budgets).forEach(function(k){if(D.budgets[k]===undefined){D.budgets[k]=inc.budgets[k];if(inc.budgetFixed[k])D.budgetFixed[k]=1}});
   Object.keys(inc.catBudgets).forEach(function(k){if(D.catBudgets[k]===undefined)D.catBudgets[k]=inc.catBudgets[k]});
-  inc.cats.forEach(function(c){var o=catObj(c.name);if(!o)D.cats.push(c);else c.subs.forEach(function(s){if(o.subs.indexOf(s)===-1)o.subs.push(s)})});
+  Object.keys(inc.tr).forEach(function(k){if(!D.tr[k])D.tr[k]=inc.tr[k]});
+  inc.cats.forEach(function(c){var o=catObj(c.name);if(!o){D.cats.push(c);D.deletedCats=D.deletedCats.filter(function(n){return n!==c.name})}else c.subs.forEach(function(s){if(o.subs.indexOf(s)===-1)o.subs.push(s)})});
   inc.incomeSources.forEach(function(s){if(D.incomeSources.indexOf(s)===-1)D.incomeSources.push(s)});
   ensureDefaultCats(D);return res;
 }
