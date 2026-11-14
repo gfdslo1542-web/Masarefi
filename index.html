@@ -384,6 +384,9 @@ var EN={'✎ الاسم والترجمة':'✎ Name & translation','الاسم �
 'مفعّل: لو فتحت التطبيق ومسجلتش حاجة النهاردة هيفكرك.':'On: if you open the app and have recorded nothing today, it will remind you.',
 'مفيش بيانات تتصدّر':'No data to export',
 'مفيش بيانات في الفترة دي':'No data for this period',
+'الديون (استلام/تحصيل − سلف)':'Debts (received/collected − lent)','الفلوس دي دخلت معايا — زوّدها على ميزانية الشهر':'This money came to me — add it to the month budget','الفلوس دي خرجت مني — نقّصها من ميزانية الشهر':'This money went out — deduct it from the month budget','الفلوس دي رجعتلي — زوّدها على ميزانية الشهر':'This money came back to me — add it to the month budget',
+'الديون مربوطة بالميزانية: فلوس استلمتها (دين عليك) أو حصّلتها تزوّد الميزانية، وفلوس سلّفتها تنقّصها، وسداد دينك بيتحسب مصروف. إنشاء الدين نفسه مبيتسجلش مصروف.':'Debts are linked to the budget: money you received (a debt you owe) or collected adds to it, money you lent deducts from it, and repaying your debt counts as spending. Creating a debt is not recorded as an expense.',
+'ميزانية الشهر بتتحسب تلقائيًا = دخل الشهر + المدّخر من الشهر اللي فات + حركة الديون. هنا تقدر تضيف مبلغ يدوي فوقهم (مش بيتحسب دخل).':'The month budget is calculated automatically = month income + last month\'s savings + debt movements. You can add a manual amount on top (not counted as income).',
 'مفيش ديون مسجلة':'No debts recorded',
 'مفيش عمليات في الشهر ده':'No entries this month',
 'مفيش عمليات في الفترة دي':'No entries in this period',
@@ -511,8 +514,8 @@ function cleanInc(x){if(!x||typeof x!=='object')return null;var a=amt(x.amount),
 function cleanDebt(x){if(!x||typeof x!=='object')return null;var a=amt(x.amount),n=str(x.name,60);if(!a||!n)return null;
   var date=validDate(x.date)?x.date:todayKey(),sum=0,pays=[];
   (Array.isArray(x.payments)?x.payments:[]).forEach(function(p){if(!p||typeof p!=='object')return;var pa=amt(p.amount);if(!pa||!validDate(p.date))return;if(sum+pa>a+0.001)return;sum+=pa;
-    pays.push({id:str(p.id,60)||uid(),date:p.date,amount:pa,note:str(p.note,120),legacy:!!p.legacy,ts:Number(p.ts)||0})});
-  return{id:str(x.id,60)||uid(),name:n,kind:x.kind==='owed'?'owed':'owe',amount:a,date:date,due:validDate(x.due)?x.due:'',note:str(x.note,120),payments:dedup(pays)}}
+    pays.push({id:str(p.id,60)||uid(),date:p.date,amount:pa,note:str(p.note,120),legacy:!!p.legacy,bud:!!p.bud,ts:Number(p.ts)||0})});
+  return{id:str(x.id,60)||uid(),name:n,kind:x.kind==='owed'?'owed':'owe',amount:a,date:date,due:validDate(x.due)?x.due:'',note:str(x.note,120),bud:!!x.bud,payments:dedup(pays)}}
 function cleanRec(x){if(!x||typeof x!=='object')return null;var a=amt(x.amount),t=str(x.title,60),c=str(x.cat,40);if(!a||!t||!c||!validDate(x.start))return null;
   return{id:str(x.id,60)||uid(),title:t,amount:a,cat:c,sub:str(x.sub,40),freq:x.freq==='weekly'?'weekly':'monthly',start:x.start,end:validDate(x.end)?x.end:'',last:validDate(x.last)?x.last:''}}
 function cleanCats(a){var seen={},o=[];(Array.isArray(a)?a:[]).forEach(function(c){if(!c||typeof c!=='object')return;var n=str(c.name,40);if(!n||seen[n])return;seen[n]=1;
@@ -601,18 +604,23 @@ function budgetInfo(m){
   if(bcache.map[m])return bcache.map[m];
   var L=ledger(),sp={},inc={},first=m;
   L.forEach(function(e){var k=e.date.slice(0,7);if(isSpend(e))sp[k]=round2((sp[k]||0)+e.amount);else if(e.k==='inc')inc[k]=round2((inc[k]||0)+e.amount);if(k<first)first=k});
+  var dj={};
+  D.debts.forEach(function(d){
+    if(d.bud){var k=d.date.slice(0,7);dj[k]=round2((dj[k]||0)+(d.kind==='owe'?d.amount:-d.amount));if(k<first)first=k}
+    if(d.kind==='owed')d.payments.forEach(function(p){if(p.legacy||!p.bud)return;var k=p.date.slice(0,7);dj[k]=round2((dj[k]||0)+p.amount);if(k<first)first=k});
+  });
   Object.keys(D.budgets).forEach(function(k){if(k<first)first=k});
   var cur=first,prev=null,g=0;
   while(cur<=m&&g++<600){
     var carry=prev?Math.max(0,round2(prev.total-prev.spent)):0;
-    var fx=!!D.budgetFixed[cur],info={income:fx?0:(inc[cur]||0),carry:fx?0:carry,manual:D.budgets[cur]||0,spent:sp[cur]||0,fixed:fx};
-    info.total=round2(info.income+info.carry+info.manual);bcache.map[cur]=info;prev=info;cur=addMonths(cur,1);
+    var fx=!!D.budgetFixed[cur],info={income:fx?0:(inc[cur]||0),carry:fx?0:carry,manual:D.budgets[cur]||0,debt:fx?0:(dj[cur]||0),spent:sp[cur]||0,fixed:fx};
+    info.total=round2(info.income+info.carry+info.manual+info.debt);bcache.map[cur]=info;prev=info;cur=addMonths(cur,1);
   }
-  return bcache.map[m]||{income:0,carry:0,manual:D.budgets[m]||0,spent:sp[m]||0,total:D.budgets[m]||0};
+  return bcache.map[m]||{income:0,carry:0,debt:0,manual:D.budgets[m]||0,spent:sp[m]||0,total:D.budgets[m]||0};
 }
 function budgetState(m){
   var i=budgetInfo(m);if(!(i.total>0))return null;var pct=i.spent/i.total*100;
-  return{budget:i.total,income:i.income,carry:i.carry,manual:i.manual,spent:i.spent,remaining:round2(i.total-i.spent),pct:pct,lvl:pct>=90?'danger':pct>=75?'warn':'ok'};
+  return{budget:i.total,income:i.income,carry:i.carry,debt:i.debt||0,manual:i.manual,spent:i.spent,remaining:round2(i.total-i.spent),pct:pct,lvl:pct>=90?'danger':pct>=75?'warn':'ok'};
 }
 function setManual(m,v){
   if(v>0)D.budgets[m]=round2(v);else delete D.budgets[m];
@@ -895,9 +903,10 @@ function budgetSheet(){
   var m=S.month;
   openSheet(T('إضافة يدوية للميزانية'),function(body,close){
     var info=budgetInfo(m);
-    body.appendChild(h('div',{class:'muted small',text:T('ميزانية الشهر بتتحسب تلقائيًا = دخل الشهر + المدّخر من الشهر اللي فات. هنا تقدر تضيف مبلغ يدوي فوقهم (مش بيتحسب دخل).')}));
+    body.appendChild(h('div',{class:'muted small',text:T('ميزانية الشهر بتتحسب تلقائيًا = دخل الشهر + المدّخر من الشهر اللي فات + حركة الديون. هنا تقدر تضيف مبلغ يدوي فوقهم (مش بيتحسب دخل).')}));
     body.appendChild(h('div',{class:'kv',style:'margin-top:8px'},h('span',{text:T('الدخل')}),h('b',{text:money(info.income)})));
     body.appendChild(h('div',{class:'kv'},h('span',{text:T('المدّخر من الشهر اللي فات')}),h('b',{text:money(info.carry)})));
+    if(info.debt)body.appendChild(h('div',{class:'kv'},h('span',{text:T('الديون (استلام/تحصيل − سلف)')}),h('b',{text:(info.debt>0?'+ ':'− ')+money(Math.abs(info.debt))})));
     var inp=h('input',{type:'text',inputmode:'decimal',id:'bud',value:info.manual?String(info.manual):'',placeholder:'0'});
     var err=h('div',{class:'err',role:'alert'});
     body.appendChild(h('label',{class:'fl',for:'bud',text:T('إضافة يدوية (اتركها فاضية أو 0 لإلغائها)')}));body.appendChild(inp);body.appendChild(err);
@@ -939,6 +948,7 @@ function renderHome(main){
     bc.appendChild(h('div',{style:'margin-top:6px'},
       h('div',{class:'kv'},h('span',{text:T('الدخل')}),h('b',{class:'pos',text:'+ '+money(bs.income)})),
       h('div',{class:'kv'},h('span',{text:T('المدّخر من الشهر اللي فات')}),h('b',{class:'pos',text:'+ '+money(bs.carry)})),
+      bs.debt?h('div',{class:'kv'},h('span',{text:T('الديون (استلام/تحصيل − سلف)')}),h('b',{class:bs.debt>0?'pos':'neg',text:(bs.debt>0?'+ ':'− ')+money(Math.abs(bs.debt))})):null,
       bs.manual?h('div',{class:'kv'},h('span',{text:T('إضافة يدوية')}),h('b',{text:'+ '+money(bs.manual)})):null));
     bc.appendChild(h('div',{class:'grid3',style:'margin-top:8px'},
       h('div',{class:'box'},h('div',{class:'l',text:T('صرفت')}),h('div',{class:'v',text:money(bs.spent)})),
@@ -1148,7 +1158,7 @@ function renderDebts(main){
     h('div',{class:'grid3'},h('div',{class:'box'},h('div',{class:'l',text:T('عليّ (متبقي)')}),h('div',{class:'v neg',text:money(tot.owe.a-tot.owe.p)})),
       h('div',{class:'box'},h('div',{class:'l',text:T('ليّ (متبقي)')}),h('div',{class:'v pos',text:money(tot.owed.a-tot.owed.p)})),
       h('div',{class:'box'},h('div',{class:'l',text:T('الصافي')}),h('div',{class:'v',text:money(tot.owed.a-tot.owed.p-(tot.owe.a-tot.owe.p))}))),
-    h('div',{class:'muted small',style:'margin-top:8px',text:T('إنشاء دين مبيتسجلش كمصروف. السداد بس هو اللي بيتحسب في المصروفات (مرة واحدة).')}),
+    h('div',{class:'muted small',style:'margin-top:8px',text:T('الديون مربوطة بالميزانية: فلوس استلمتها (دين عليك) أو حصّلتها تزوّد الميزانية، وفلوس سلّفتها تنقّصها، وسداد دينك بيتحسب مصروف. إنشاء الدين نفسه مبيتسجلش مصروف.')}),
     h('button',{type:'button',class:'btn p',style:'margin-top:10px',text:T('+ دين جديد'),onclick:function(){openDebt()}})));
   var chips=h('div',{class:'chips',style:'margin-bottom:10px',role:'group','aria-label':T('نوع الدين')});
   [['all',T('الكل')],['owe',T('عليّ')],['owed',T('ليّ')]].forEach(function(x){chips.appendChild(h('button',{type:'button',class:'chip','aria-pressed':F===x[0]?'true':'false',text:x[1],onclick:function(){S.debtF=x[0];render()}}))});
@@ -1195,6 +1205,10 @@ function openDebt(d){
     if(d&&d.payments.length){b1.disabled=b2.disabled=true}
     seg.appendChild(b1);seg.appendChild(b2);body.appendChild(seg);
     [[T('اسم الشخص / الجهة'),'dn',nm],[T('المبلغ الأصلي'),'da',am],[T('تاريخ الدين'),'dd',dt],[T('موعد الاستحقاق (اختياري)'),'du',du],[T('ملاحظات (اختياري)'),'dnt',nt]].forEach(function(x){body.appendChild(h('label',{class:'fl',for:x[1],text:x[0]}));body.appendChild(x[2])});
+    var bd=h('input',{type:'checkbox',id:'dbud',style:'width:24px;min-height:24px'});bd.checked=d?!!d.bud:true;
+    var bl=h('span',{text:''});var setBl=function(){bl.textContent=kind==='owe'?T('الفلوس دي دخلت معايا — زوّدها على ميزانية الشهر'):T('الفلوس دي خرجت مني — نقّصها من ميزانية الشهر')};setBl();
+    b1.addEventListener('click',setBl);b2.addEventListener('click',setBl);
+    body.appendChild(h('label',{class:'kv',for:'dbud',style:'align-items:center;margin-top:10px'},bl,bd));
     body.appendChild(err);
     body.appendChild(h('button',{type:'button',class:'btn p',style:'margin-top:12px',text:d?T('حفظ التعديل'):T('حفظ الدين'),onclick:function(){
       var n=str(nm.value,60),a=parseAmount(am.value);
@@ -1203,8 +1217,8 @@ function openDebt(d){
       if(!validDate(dt.value)){err.textContent=T('اختار تاريخ صحيح');return}
       if(du.value&&(!validDate(du.value)||du.value<dt.value)){err.textContent=T('موعد الاستحقاق لازم يكون بعد تاريخ الدين');return}
       if(d){if(a<paidOf(d)){err.textContent=T('المبلغ الأصلي مينفعش يبقى أقل من المسدد (')+money(paidOf(d))+')';return}
-        d.name=n;d.amount=a;d.date=dt.value;d.due=du.value;d.note=str(nt.value,120);d.kind=kind}
-      else D.debts.push({id:uid(),name:n,kind:kind,amount:a,date:dt.value,due:du.value,note:str(nt.value,120),payments:[]});
+        d.name=n;d.amount=a;d.date=dt.value;d.due=du.value;d.note=str(nt.value,120);d.kind=kind;d.bud=bd.checked}
+      else D.debts.push({id:uid(),name:n,kind:kind,amount:a,date:dt.value,due:du.value,note:str(nt.value,120),bud:bd.checked,payments:[]});
       save();close();toast(T('اتحفظ ✓'));
     }}));
     if(d)body.appendChild(h('button',{type:'button',class:'btn d',style:'margin-top:8px',text:T('حذف الدين'),onclick:function(){
@@ -1220,6 +1234,8 @@ function openPayment(d,p){
       dt=h('input',{type:'date',id:'pd',value:p?p.date:todayKey()}),nt=h('input',{type:'text',id:'pn',maxlength:'120',value:p?p.note:''}),err=h('div',{class:'err',role:'alert'});
     [[T('المبلغ'),'pa',am],[T('التاريخ'),'pd',dt],[T('ملاحظة (اختياري)'),'pn',nt]].forEach(function(x){body.appendChild(h('label',{class:'fl',for:x[1],text:x[0]}));body.appendChild(x[2])});
     if(p&&p.legacy)body.appendChild(h('div',{class:'muted small',style:'margin-top:6px',text:T('دي دفعة مُرحّلة من النسخة القديمة، وكانت متسجلة كمصروف وقتها، فمبتتحسبش تاني.')}));
+    var pb=h('input',{type:'checkbox',id:'pbud',style:'width:24px;min-height:24px'});pb.checked=p?!!p.bud:true;
+    if(d.kind==='owed'&&!(p&&p.legacy))body.appendChild(h('label',{class:'kv',for:'pbud',style:'align-items:center;margin-top:10px'},h('span',{text:T('الفلوس دي رجعتلي — زوّدها على ميزانية الشهر')}),pb));
     body.appendChild(err);
     body.appendChild(h('button',{type:'button',class:'btn p',style:'margin-top:12px',text:p?T('حفظ التعديل'):T('تسجيل الدفعة'),onclick:function(){
       if(locked)return;var a=parseAmount(am.value);
@@ -1227,7 +1243,7 @@ function openPayment(d,p){
       if(a>max+0.001){err.textContent=T('المبلغ أكبر من المتبقي (')+money(max)+T('). لو الدين فعلًا أكبر عدّل المبلغ الأصلي الأول.');return}
       if(!validDate(dt.value)){err.textContent=T('اختار تاريخ صحيح');return}
       locked=true;
-      if(p){p.amount=a;p.date=dt.value;p.note=str(nt.value,120)}else d.payments.push({id:uid(),date:dt.value,amount:a,note:str(nt.value,120),legacy:false,ts:Date.now()});
+      var bud=d.kind==='owed'&&pb.checked;if(p){p.amount=a;p.date=dt.value;p.note=str(nt.value,120);if(!p.legacy)p.bud=bud}else d.payments.push({id:uid(),date:dt.value,amount:a,note:str(nt.value,120),legacy:false,bud:bud,ts:Date.now()});
       save();close();toast(T('اتسجلت الدفعة ✓'));if(d.kind==='owe'&&!(p&&p.legacy))setTimeout(function(){checkAlerts(dt.value.slice(0,7))},60);
     }}));
     if(p)body.appendChild(h('button',{type:'button',class:'btn d',style:'margin-top:8px',text:T('حذف الدفعة'),onclick:function(){var i=d.payments.indexOf(p);d.payments.splice(i,1);save();close();toast(T('اتحذفت الدفعة'),{label:T('تراجع'),fn:function(){d.payments.push(p);save();render()}})}}));
